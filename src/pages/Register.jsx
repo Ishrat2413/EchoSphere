@@ -1,10 +1,12 @@
-import { use } from "react";
+import { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../provider/AuthProvider";
 import SocialLogin from "../components/homeLayout/SocialLogin";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
     const { createUser, setUser, updateUser } = use(AuthContext)
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate()
     const handleRegister = (e) => {
         e.preventDefault()
@@ -13,7 +15,7 @@ const Register = () => {
         const photoURL = form.photoURL.value
         const email = form.email.value
         const password = form.password.value
-        console.log(name, photoURL, email, password)
+        // console.log(name, photoURL, email, password)
         createUser(email, password)
             .then(result => {
                 const user = result.user
@@ -93,13 +95,22 @@ const Register = () => {
                                     <span className="label-text text-gray-700 font-medium">Password</span>
                                 </label>
                             </div>
-                            <input
-                                type="password"
-                                className="input input-bordered w-full"
-                                placeholder="Enter your Password"
-                                name="password"
-                                required
-                            />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    className="input input-bordered w-full pr-10"
+                                    placeholder="Enter your Password"
+                                    name="password"
+                                    required
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? <FaEyeSlash size={24}/> : <FaEye size={24}/>}
+                                </button>
+                            </div>
                         </div>
 
                         {/* Login Button */}
